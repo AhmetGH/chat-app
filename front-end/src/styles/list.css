@@ -1,0 +1,20 @@
+.container {
+    display: flex;
+    justify-content: space-around;
+  }
+  
+  .category-section, .product-section {
+    width: 45%;
+  }
+  
+  .category-box, .product-box {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .category-box div, .product-box div {
+    margin-bottom: 5px;
+  }
+  

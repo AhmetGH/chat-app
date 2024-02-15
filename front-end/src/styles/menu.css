@@ -1,0 +1,25 @@
+
+/* Stil Dosyası (örneğin: menu.css) */
+
+/* Menü stilini belirle */
+.menu {
+    background-color: #f8f9fa; /* Menü arka plan rengi */
+    border-radius: 5px;
+    padding: 10px;
+    display: flex;
+    justify-content: space-around; /* Menü öğelerini yatayda eşit aralıklı hizala */
+  }
+  
+  /* Menü öğelerinin stilini belirle */
+  .menu .item {
+    color: #007bff; /* Menü öğelerinin yazı rengi */
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease; /* Renk geçişini yumuşat */
+  }
+  
+  /* Etkin menü öğesinin stilini belirle */
+  .menu .item.active {
+    color: #28a745; /* Etkin menü öğesinin yazı rengi */
+  }
+  

@@ -1,59 +1,96 @@
-import React, { useState, useEffect } from 'react';
-import io from 'socket.io-client';
+import React, { Component } from 'react';
+import { Menu } from 'semantic-ui-react';
+import AddProduct from './components/addproduct.js';
+import AddCategory from './components/addcategory.js';
+import List from './components/list.js';
+import Delete from './components/delete.js';
+import UpdateProduct from './components/updateproduct.js';
+import UpdateCategory from './components/updatecategory.js';
+import Chat from './components/chat.js';
+import './styles/menu.css';
 
-import './styles/Chat.css'; 
+export default class MenuExampleContentProp extends Component {
+  state = {
+    activeItem: ''
+  };
 
-const Chat = () => {
-    const [sender, setSender] = useState('');
-    const [message, setMessage] = useState('');
-    const [messages, setMessages] = useState([]);
-    const [typing, setTyping] = useState('');
+  handleItemClick = (e, { name }) => this.setState({ activeItem: name });
 
-    useEffect(() => {
-        const socket = io.connect('http://localhost:3000');
+  renderContent() {
+    const { activeItem } = this.state;
 
-        socket.on('chat', data => {
-            setMessages(prevMessages => [...prevMessages, { sender: data.sender, message: data.message }]);
-        });
+    switch (activeItem) {
+      case 'addProduct':
+        return <AddProduct />;
+      case 'addCategory':
+        return <AddCategory />;
+      case 'list':
+        return <List />;
+      case 'updateProduct':
+        return <UpdateProduct />;
+      case 'updateCategory':
+        return <UpdateCategory />;
+      case 'delete':
+        return <Delete />;
+      case 'chat':
+        return <Chat />;
+      default:
+        return null;
+    }
+  }
 
-        socket.on('typing', data => {
-            setTyping(`${data} typing...`);
-        });
-
-        return () => {
-            socket.disconnect();
-        };
-    }, []);
-
-    const handleSubmit = () => {
-        const socket = io.connect('http://localhost:3000');
-        socket.emit('chat', { message, sender });
-        setMessage('');
-    };
-
-    const handleTyping = () => {
-        const socket = io.connect('http://localhost:3000');
-        socket.emit('typing', sender);
-    };
+  render() {
+    const { activeItem } = this.state;
 
     return (
-        <div id="chat-wrap">
-            <h2>Sohbet</h2>
-            <div id="chat-window">
-                {messages.map((msg, index) => (
-                    <div key={index}>
-                        <p><strong>{msg.sender} : </strong>{msg.message}</p>
-                    </div>
-                ))}
-            </div>
-            <input type="text" id="sender" placeholder="İsim" value={sender} onChange={e => setSender(e.target.value)} />
-            <input type="text" id="message" placeholder="Mesaj Gir" value={message} onChange={e => setMessage(e.target.value)} onKeyPress={handleTyping} />
-            <button id="submitBtn" onClick={handleSubmit}>Gönder</button>
-            <div id="feedback">
-                <p>{typing}</p>
-            </div>
-        </div>
-    );
-};
+      <div>
+        <Menu className="menu">
+          <Menu.Item
+            name='addProduct'
+            active={activeItem === 'addProduct'}
+            content='Ürün Ekle'
+            onClick={this.handleItemClick}
+          />
+          <Menu.Item
+            name='addCategory'
+            active={activeItem === 'addCategory'}
+            content='Kategori Ekle'
+            onClick={this.handleItemClick}
+          />
 
-export default Chat;
+          <Menu.Item
+            name='list'
+            active={activeItem === 'list'}
+            content='Listele'
+            onClick={this.handleItemClick}
+          />
+          <Menu.Item
+            name='updateProduct'
+            active={activeItem === 'updateProduct'}
+            content='Ürün Güncelle'
+            onClick={this.handleItemClick}
+          />
+          <Menu.Item
+            name='updateCategory'
+            active={activeItem === 'updateCategory'}
+            content='Kategori Güncelle'
+            onClick={this.handleItemClick}
+          />
+          <Menu.Item
+            name='delete'
+            active={activeItem === 'delete'}
+            content='Sil'
+            onClick={this.handleItemClick}
+          />
+          <Menu.Item
+            name='chat'
+            active={activeItem === 'chat'}
+            content='Sohbet'
+            onClick={this.handleItemClick}
+          />
+        </Menu>
+        {this.renderContent()}
+      </div>
+    );
+  }
+}
