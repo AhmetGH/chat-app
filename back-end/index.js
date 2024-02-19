@@ -13,6 +13,8 @@ const dbConfig = {
     database: 'venhancer',
   };
 
+
+
 const client = new Client(dbConfig);
 
 app.use(cors());
@@ -24,7 +26,14 @@ const server = app.listen(
   () => console.log(`calisti http://localhost:${PORT}`)
 )
 
-const io = socket(server)
+const io=socket(server,{
+  cors:
+  {
+    origin:"*",
+    methods:["GET","POST"]
+  }
+})
+
 
 io.on('connection', (socket) => {
   console.log(`Baglanan kullanici ID: ${socket.id}`)
